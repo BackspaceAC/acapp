@@ -1,3 +1,33 @@
-.ac_game_menu{
+.ac-game-menu { /* 整个页面的设置 */
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/image/menu/background.jpg");
+    background-size: 96% 100%;
+}
 
+.ac-game-menu-field { /* 选项区域的设置 */
+    width: 20vw;
+    position: relative; /* 有了相对位置的设置才能调top和left*/
+    top: 28vh;
+    left: 14vw;
+    user-select: none; /* 页面不可被选中 */
+}
+
+.ac-game-menu-field-item { /* 每个选项的分别设置 */
+    color: white;
+    height: 7vh;
+    width: 13vw;
+    font-size: 4vh;
+    font-style: italic; /* 斜体 */
+    padding: 2vh; /* 内边距 */
+    text-align: center; /* 居中 */
+    background-color: #35ff0033;
+    border-radius: 10px; /* 圆角 */
+    letter-spacing: 0.5vw; /* 字之间宽度 */
+    cursor: pointer; /* 变成小手 */
+}
+
+.ac-game-menu-field-item:hover { /* 鼠标悬浮设置 */
+    transform: scale(1.2); /* 变大倍数 */
+    transition: 80ms; /* 变大时间 */
 }

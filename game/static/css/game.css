@@ -31,3 +31,10 @@
     transform: scale(1.2); /* 变大倍数 */
     transition: 80ms; /* 变大时间 */
 }
+
+
+.ac-game-playground {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+}

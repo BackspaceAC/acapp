@@ -27,6 +27,13 @@ class Player extends AcGameObject { // 一样要从AcGameObject扩展出来
         this.friction = 0.9; // 被击中后的摩擦力
 
         this.cur_skill = null; // 当前的技能是什么
+
+        if (this.is_me) { // 渲染自己的头像
+            this.img = new Image();
+            this.img.src = this.playground.root.settings.photo;
+        }
+
+        this.start();
     }
 
     start() {
@@ -165,10 +172,21 @@ class Player extends AcGameObject { // 一样要从AcGameObject扩展出来
     }
 
     render() { //每一帧渲染一次 重新画一次圆
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false); // 以xy为圆心radius为半径画角度为2Π的弧
-        this.ctx.fillStyle = this.color;
-        this.ctx.fill();
+        if (this.is_me) { // 如果是自己 将头像渲染上去
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            this.ctx.stroke();
+            this.ctx.clip();
+            this.ctx.drawImage(this.img, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2); 
+            this.ctx.restore();
+        }
+        else { // 如果是人机 随机颜色画圆
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false); // 以xy为圆心radius为半径画角度为2Π的弧
+            this.ctx.fillStyle = this.color;
+            this.ctx.fill();
+        }
     }
 
     on_destory() {

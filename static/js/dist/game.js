@@ -618,6 +618,8 @@ class Settings{
         this.$login.hide();
 
 
+        this.$acwing_login = this.$settings.find('.ac-game-settings-ac img');
+
 
         this.$register = this.$settings.find(".ac-game-settings-register");
 
@@ -643,9 +645,15 @@ class Settings{
     }
 
     listening() {
+        let outer = this;
         // 注册界面和登陆界面的监听函数
         this.listening_login();
         this.listening_register();
+
+
+        this.$acwing_login.click(function() {
+            outer.acwing_login();
+        });
     }
 
     listening_register() { // 注册界面的监听函数
@@ -668,6 +676,20 @@ class Settings{
             outer.login_on_remote();
         });
     }
+
+    acwing_login() { // 访问一键登录的链接 服务器生成了apply_code的链接 返回给前端后重定向到授权登录界面 其中的apply_code带着用户信息向acwing发送授权请求
+        $.ajax({
+            url: "https://app2776.acapp.acwing.com.cn/settings/acwing/web/apply_code/",
+            type: "GET",
+            success: function(resp) {
+                console.log(resp);
+                if (resp.result === "success") {
+                    window.location.replace(resp.apply_code_url); // 重定向到授权登录页面
+                }
+            },
+        });
+    }
+
 
     login_on_remote() { // 在远程服务器上登录
         let outer = this;

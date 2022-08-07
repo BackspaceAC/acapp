@@ -25,7 +25,7 @@ def register(request):
     user = User(username=username)
     user.set_password(password) # 存下密码哈希值
     user.save() # 创建成功
-    Player.objects.create(user=user, photo="https://i0.hdslb.com/bfs/album/6f1d4494c850ab3d693bb6e86a60f16fd92aec49.png") # 往后台数据库的player里创建新对象
+    Player.objects.create(user=user, photo="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202107%2F09%2F20210709142454_dc8dc.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1661779231&t=7fd32076") # 往后台数据库的player里创建新对象
     login(request, user)
     return JsonResponse({
         'result': "success",

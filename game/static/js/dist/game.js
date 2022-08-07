@@ -639,12 +639,31 @@ class Settings{
         this.start();
     }
 
-    start() {
-        this.getinfo();
-        this.listening();
+    getinfo_acapp() {
+        let outer = this;
+        $.ajax({
+            url: "https://app2776.acapp.acwing.com.cn/settings/acwing/acapp/apply_code",
+            type: "GET",
+            success: function(resp) {
+                if (resp.result === "success") {
+                    // 确认好appid 接收授权code的函数地址 要授权的范围和state暗号就可以开始申请授权了
+                    outer.acapp_login(resp.appid, resp.redirect_uri, resp.scope, resp.state);
+                }
+            }
+        });
     }
 
-    listening() {
+    start() {
+        if (this.platform === "ACAPP") {
+            this.getinfo_acapp();
+        }
+        else {
+            this.getinfo_web();
+            this.listening();
+        }
+    }
+
+    listening() { // 网页端才需要监听函数
         let outer = this;
         // 注册界面和登陆界面的监听函数
         this.listening_login();
@@ -770,7 +789,7 @@ class Settings{
         this.$register.show();
     }
 
-    getinfo() {
+    getinfo_web() {
         let outer = this;
 
         $.ajax({ // 发送请求给后端 后端根据路由找urls文件夹 文件夹里对应文件找回views文件夹的函数
@@ -783,8 +802,9 @@ class Settings{
                 console.log(resp);
                 if (resp.result === "success") {
                     outer.username = resp.username;
+                    console.log(resp.photo)
                     outer.photo = resp.photo;
-                    console.log(outer.photo);
+                    // console.log(outer.photo);
                     outer.hide();
                     outer.root.menu.show();
                 }
@@ -794,6 +814,20 @@ class Settings{
             }
         });
     }
+
+    acapp_login(appid, redirect_uri, scope, state) {
+        let outer = this;
+        this.root.AcOS.api.oauth2.authorize(appid, redirect_uri, scope, state, function(resp) { // resp是receive_code()函数的返回值
+            console.log(resp);
+            if (resp.result === "success") { // 和网页端类似 都是获取到用户的用户名和头像
+                outer.username = resp.username;
+                outer.photo =  resp.photo;
+                outer.hide();
+                outer.root.menu.show();
+            }
+        });
+    }
+
 
     hide() {
         this.$settings.hide();
